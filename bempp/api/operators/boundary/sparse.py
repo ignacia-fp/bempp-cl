@@ -109,6 +109,7 @@ def multitrace_identity(
 
 
 def mte_operators(domains_, ranges_, dual_to_ranges_, kappa):
+    """Assembles and returns the relevant operators to build the MtE operator."""
     IP = identity(domains_[1], ranges_[1], dual_to_ranges_[1])
     IC = identity(domains_[0], ranges_[0], dual_to_ranges_[0])
     N = (1.0 / kappa)**2 * curl_curl_identity(domains_[0], ranges_[0], dual_to_ranges_[0])
@@ -118,6 +119,7 @@ def mte_operators(domains_, ranges_, dual_to_ranges_, kappa):
 
 
 def mte_lambda_1i(mte_operators, beta, kappa):
+    """Assembles and returns the relevant operators to build the Lambda1 factor in the MtE operator."""
     from scipy.sparse import bmat
     from bempp.api.assembly.discrete_boundary_operator import (InverseSparseDiscreteBoundaryOperator)
     IP, IC, N, LT, L = mte_operators
@@ -125,6 +127,7 @@ def mte_lambda_1i(mte_operators, beta, kappa):
 
 
 def mte_lambda_2(mte_operators):
+    """Assembles and returns the relevant operators to build the Lambda2 factor in the MtE operator."""
     IP, IC, N, LT, L = mte_operators
     return IC - N
 

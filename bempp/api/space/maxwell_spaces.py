@@ -843,9 +843,7 @@ def _numba_snc0_surface_curl(
     local_multipliers,
     normal_multipliers,
 ):
-
     """Evaluate the curl on an element."""
-
     normal = grid_data.normals[element_index] * normal_multipliers[element_index]
     reference_derivatives = shapeset_gradient(local_coordinates)
     jac_inv_t = grid_data.jac_inv_trans[element_index]

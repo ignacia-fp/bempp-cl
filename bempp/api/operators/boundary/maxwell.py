@@ -378,7 +378,6 @@ def osrc_mte(
     precision=None,
 ):
     """Assemble the OSRC approximation to the NtD operator."""
-
     if domains[0].identifier != "snc0":
         raise ValueError("Domain space must be a SNC type function space.")
 
@@ -407,16 +406,15 @@ def osrc_mte(
     )
 
 
-def Sum(A, B, inpt, inner_coeff, outer_coeff):
-    s = 0.0
-    index = 0
-    for coefficient in A:
-        s += coefficient * inpt / (inner_coeff + B[index] * inpt)
-        index += 1
-    return outer_coeff + s
-
-
 def _pade_coeffs(Np, angle):
+    """Calculate and return Pade Cofficients."""
+    def Sum(A, B, inpt, inner_coeff, outer_coeff):
+        s = 0.0
+        index = 0
+        for coefficient in A:
+            s += coefficient * inpt / (inner_coeff + B[index] * inpt)
+            index += 1
+        return outer_coeff + s
     a = [(2.0 / (2.0 * Np + 1.0)) * _np.sin(_np.pi * (i + 1.0) / (2.0 * Np + 1.0))**2 for i in range(Np)]
     b = [_np.cos(_np.pi * (i + 1.0) / (2.0 * Np + 1.0))**2 for i in range(Np)]
     A = [(_np.exp(-1.0j * angle / 2.0) * a[i]) / (1.0 + b[i] * (_np.exp(-1.0j * angle) - 1))**2 for i in range(Np)]
