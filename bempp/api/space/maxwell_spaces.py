@@ -833,6 +833,7 @@ def _numba_snc0_evaluate(
 
     return result
 
+
 @_numba.njit
 def _numba_snc0_surface_curl(
     element_index,
@@ -848,9 +849,8 @@ def _numba_snc0_surface_curl(
     normal = grid_data.normals[element_index] * normal_multipliers[element_index]
     reference_derivatives = shapeset_gradient(local_coordinates)
     jac_inv_t = grid_data.jac_inv_trans[element_index]
-    derivatives = jac_inv_t @ reference_derivatives @jac_inv_t.T
-    reference_values = normal[0] * (derivatives[2,1]-derivatives[1,2]) + normal[1] * (derivatives[0,2]-derivatives[2,0]) + normal[2] * (derivatives[1,0]-derivatives[0,1]) 
-
+    derivatives = jac_inv_t @ reference_derivatives @ jac_inv_t.T
+    reference_values = normal[0] * (derivatives[2, 1] - derivatives[1, 2]) + normal[1] * (derivatives[0, 2] - derivatives[2, 0]) + normal[2] * (derivatives[1, 0] - derivatives[0, 1]) 
 
     result = _np.empty(3, dtype=_np.float64)
 
