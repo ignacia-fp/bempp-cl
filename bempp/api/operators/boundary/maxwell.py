@@ -315,7 +315,6 @@ class _OsrcMtE():
         self.domains_ = domains
         self.ranges_ = ranges
         self.dual_to_ranges_ = dual_to_ranges
-        self.coeff = 0
 
     @property
     def descriptor(self):
@@ -332,8 +331,7 @@ class _OsrcMtE():
         return self.lambda_2_inv * res
 
     def _matvec2(self, v):
-        res = self.coeff * self.mass * v + self.pade_coeffs[3] * v
-        return self.lambda_2_inv * res
+        return self.lambda_2_inv * v
 
     def _assemble(self):
         """Assemble the operator."""
@@ -346,7 +344,7 @@ class _OsrcMtE():
         from scipy.sparse.linalg import LinearOperator
 
         wavenumber, npade, theta, damped_wavenumber = self.descriptor.options
-   
+
         if damped_wavenumber is None:
             dk = wavenumber + 1.0j * 0.39 * wavenumber**(1.0 / 3) * _np.sqrt(2)**(2.0 / 3)
         else:
@@ -358,15 +356,13 @@ class _OsrcMtE():
 
         self.pade_coeffs = _pade_coeffs(npade, theta)
         self.mass = mte_op[1].weak_form()
-        
+
         if (self.type == 1):
             self.pi = []
             for i in range(npade):
                 self.pi.append((self.pade_coeffs[1][i] / self.pade_coeffs[2][i]) * mte_lambda_1i(mte_op, self.pade_coeffs[2][i], dk))
             return LinearOperator(self.lambda_2_inv.shape, matvec=self._matvec1)
         else:
-            for j in range(int(_np.floor(4.0 * npade / 5)), npade):
-                self.coeff += self.pade_coeffs[1][j]
             return LinearOperator(self.lambda_2_inv.shape, matvec=self._matvec2)
 
 

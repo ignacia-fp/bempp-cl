@@ -127,7 +127,7 @@ class BoundaryOperatorWithAssembler(BoundaryOperator):
         if (self.transpose_):
             return self.assembler.assemble(self.descriptor).transpose()
         return self.assembler.assemble(self.descriptor)
-        
+
     def _transpose(self, _range):
         return BoundaryOperatorWithAssembler(self._dual_to_range, self._domain, _range, self._assembler, self._operator_descriptor, True)
 

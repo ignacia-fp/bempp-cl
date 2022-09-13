@@ -897,13 +897,10 @@ def l2_identity_kernel(
                         local_test_fun_values[dim_index, test_index, quad_index]
                         * local_trial_fun_values[dim_index, trial_index, quad_index]
                         * quad_weights[quad_index]
-                        * integration_element
-                    )
-                    
+                        * integration_element)
 
-@_numba.jit(
-    nopython=True, parallel=False, error_model="numpy", fastmath=True, boundscheck=False
-)
+
+@_numba.jit(nopython=True, parallel=False, error_model="numpy", fastmath=True, boundscheck=False)
 def l2_grad_identity_kernel(
     grid_data,
     nshape_test,
@@ -953,9 +950,7 @@ def l2_grad_identity_kernel(
                         result[nshape * element_index + test_index * nshape_trial + trial_index] += (local_test_fun_values[grad_index, test_index, quad_index] * local_trial_fun_values[dim_index, grad_index, trial_index, quad_index] * quad_weights[quad_index] * integration_element)
 
 
-@_numba.jit(
-    nopython=True, parallel=False, error_model="numpy", fastmath=True, boundscheck=False
-)
+@_numba.jit(nopython=True, parallel=False, error_model="numpy", fastmath=True, boundscheck=False)
 def l2_curl_curl_identity_kernel(
     grid_data,
     nshape_test,
@@ -976,7 +971,6 @@ def l2_curl_curl_identity_kernel(
 ):
     """Evaluate kernel for L2 identity."""
     element = elements[element_index]
-
     local_test_fun_values = test_basis_curl(
         element_index,
         test_shapeset_gradient,
@@ -985,7 +979,6 @@ def l2_curl_curl_identity_kernel(
         test_multipliers,
         test_normal_multipliers,
     )
-
     local_trial_fun_values = trial_basis_curl(
         element_index,
         trial_shapeset_gradient,
@@ -994,7 +987,6 @@ def l2_curl_curl_identity_kernel(
         trial_multipliers,
         trial_normal_multipliers,
     )
-  
     nshape = nshape_test * nshape_trial
     integration_element = grid_data.integration_elements[element]
     n_quad_points = len(quad_weights)
@@ -1003,12 +995,10 @@ def l2_curl_curl_identity_kernel(
             for quad_index in range(n_quad_points):
                 result[nshape * element_index + test_index * nshape_trial + trial_index] += (
                     local_test_fun_values[test_index]
-                    * local_trial_fun_values[trial_index] * quad_weights[quad_index] * integration_element) 
+                    * local_trial_fun_values[trial_index] * quad_weights[quad_index] * integration_element)
 
 
-@_numba.jit(
-    nopython=True, parallel=False, error_model="numpy", fastmath=True, boundscheck=False
-)
+@_numba.jit(nopython=True, parallel=False, error_model="numpy", fastmath=True, boundscheck=False)
 def laplace_beltrami_kernel(
     grid_data,
     nshape_test,
@@ -1047,7 +1037,6 @@ def laplace_beltrami_kernel(
         trial_multipliers,
         trial_normal_multipliers,
     )
-
     nshape = nshape_test * nshape_trial
     dimension = local_test_fun_values.shape[0]
     n_quad_points = local_test_fun_values.shape[3]

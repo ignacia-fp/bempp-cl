@@ -109,8 +109,8 @@ def multitrace_identity(
 
 
 def mte_operators(domains_, ranges_, dual_to_ranges_, kappa):
-    IP = identity(domains_[1], ranges_[1], dual_to_ranges_[1]) 
-    IC = identity(domains_[0], ranges_[0], dual_to_ranges_[0]) 
+    IP = identity(domains_[1], ranges_[1], dual_to_ranges_[1])
+    IC = identity(domains_[0], ranges_[0], dual_to_ranges_[0])
     N = (1.0 / kappa)**2 * curl_curl_identity(domains_[0], ranges_[0], dual_to_ranges_[0])
     LT = grad_identity(domains_[1], ranges_[0], dual_to_ranges_[0])
     L = LT._transpose(LT._domain)
